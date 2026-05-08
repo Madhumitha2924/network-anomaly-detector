@@ -1,0 +1,95 @@
+════════════════════════════════════════════════════════════════════════
+   NETWORK TRAFFIC ANOMALY DETECTION REPORT
+   Nokia Bell Labs — AIOps / Network Security Analysis
+   Generated: 2026-05-09 00:54:52
+   Author:    Madhumitha C | B.Tech AI & Data Science, Veltech University
+════════════════════════════════════════════════════════════════════════
+
+1. EXECUTIVE SUMMARY
+────────────────────────────────────────────────────────────────────────
+   Total packets analyzed  : 360
+   Anomalies detected      : 60
+   Detection rate          : 16.7%
+   Normal traffic          : 300 (83.3%)
+   Baseline mean bytes/pkt : 3,498
+   Baseline mean packets   : 32
+
+2. ANOMALY BREAKDOWN BY TYPE
+────────────────────────────────────────────────────────────────────────
+   DDOS                 ███░░░░░░░░░░░░░░░░░  10 (17%)
+   PORT_SCAN            ███░░░░░░░░░░░░░░░░░  10 (17%)
+   BRUTE_FORCE          ███░░░░░░░░░░░░░░░░░  10 (17%)
+   LARGE_TRANSFER       ██░░░░░░░░░░░░░░░░░░   8 (13%)
+   HIGH_FREQUENCY       ██████░░░░░░░░░░░░░░  20 (33%)
+   SUSPICIOUS_PORT      ░░░░░░░░░░░░░░░░░░░░   2 (3%)
+
+3. SEVERITY DISTRIBUTION
+────────────────────────────────────────────────────────────────────────
+   [CRITICAL] score ≥ 0.85 : 48 packets
+   [HIGH]     score ≥ 0.70 : 10 packets
+   [MEDIUM]   score ≥ 0.50 : 2 packets
+
+4. TOP SUSPICIOUS SOURCE IPs
+────────────────────────────────────────────────────────────────────────
+   185.220.101.28         10 events  avg_score=0.70
+   203.0.113.54           10 events  avg_score=1.00
+   91.108.4.10            10 events  avg_score=1.00
+   192.168.1.49            1 events  avg_score=1.00
+   192.168.1.48            1 events  avg_score=1.00
+   192.168.1.26            1 events  avg_score=1.00
+   8.8.105                 1 events  avg_score=1.00
+   10.10.1.17              1 events  avg_score=1.00
+   192.168.1.54            1 events  avg_score=1.00
+   192.168.1.11            1 events  avg_score=1.00
+
+5. PORT SCAN ANALYSIS
+────────────────────────────────────────────────────────────────────────
+   185.220.101.28       scanned 10 unique ports  [RISK: HIGH]
+
+6. TOP 20 ANOMALOUS PACKETS (by score)
+────────────────────────────────────────────────────────────────────────
+   Packet ID    Source IP        DPort  Type           Score      Bytes(KB)
+   ────────────────────────────────────────────────────────────────────
+   EXFIL-56     192.168.1.26     443    DDOS           1.00   912,728.6 KB
+   BRUTE-16     203.0.113.54     22     BRUTE_FORCE    1.00      139.9 KB
+   HFREQ-15     203.0.113.127    80     HIGH_FREQUENCY 1.00    1,045.1 KB
+   DDOS-13      91.108.4.10      80     HIGH_FREQUENCY 1.00      729.0 KB
+   EXFIL-2      192.168.1.49     443    DDOS           1.00   914,503.8 KB
+   DDOS-49      91.108.4.10      80     HIGH_FREQUENCY 1.00      508.1 KB
+   BRUTE-40     203.0.113.54     22     BRUTE_FORCE    1.00       72.9 KB
+   BRUTE-4      203.0.113.54     22     BRUTE_FORCE    1.00      167.6 KB
+   DDOS-19      91.108.4.10      80     HIGH_FREQUENCY 1.00    1,143.3 KB
+   DDOS-1       91.108.4.10      80     HIGH_FREQUENCY 1.00      753.8 KB
+   DDOS-7       91.108.4.10      80     HIGH_FREQUENCY 1.00    1,204.9 KB
+   BRUTE-34     203.0.113.54     22     BRUTE_FORCE    1.00      175.3 KB
+   EXFIL-26     192.168.1.54     443    DDOS           1.00   898,126.3 KB
+   EXFIL-32     192.168.1.11     443    DDOS           1.00   823,106.7 KB
+   HFREQ-57     172.67.182.161   80     HIGH_FREQUENCY 1.00    1,105.1 KB
+   HFREQ-45     185.220.101.168  80     HIGH_FREQUENCY 1.00      623.0 KB
+   DDOS-31      91.108.4.10      80     HIGH_FREQUENCY 1.00      609.5 KB
+   SUSPPORT-11  10.0.0.42        1337   LARGE_TRANSFER 1.00       24.1 KB
+   HFREQ-3      104.21.34.163    80     HIGH_FREQUENCY 1.00    1,182.6 KB
+   BRUTE-52     203.0.113.54     22     BRUTE_FORCE    1.00      114.8 KB
+
+7. DETECTION METHODOLOGY
+────────────────────────────────────────────────────────────────────────
+   Algorithm 1 : Z-Score Detection
+                 Flags packets where |x - μ| / σ > 2.5 (bytes, packet count)
+   Algorithm 2 : IQR Outlier Detection
+                 Flags bytes > Q3 + 2.0 × IQR (robust to skewed distributions)
+   Algorithm 3 : Rule-Based Heuristics
+                 DDoS (>5000 pkts), HighFreq (>50 pkt/ms), BruteForce, BadPort
+   Algorithm 4 : IP Frequency Analysis
+                 Port scan detection: unique dest ports per source IP ≥ 10
+
+8. RECOMMENDATIONS
+────────────────────────────────────────────────────────────────────────
+   [DDoS]         → Enable rate limiting and traffic scrubbing on affected endpoints
+   [Port Scan]    → Block scanning IPs at firewall; enable IDS signatures
+   [Brute Force]  → Enforce MFA, account lockout policy, and SSH key auth
+   [Data Exfil]   → Inspect large HTTPS transfers; enable DLP policies
+   [Susp. Ports]  → Block C2 ports (4444, 31337, 6666) at perimeter firewall
+
+════════════════════════════════════════════════════════════════════════
+   END OF REPORT | Nokia Bell Labs AIOps Project | Madhumitha C
+════════════════════════════════════════════════════════════════════════
